@@ -1,9 +1,14 @@
 const express = require('express');
+const mongoose=require('mongoose')
 const router = express.Router();
-const Organizations = require('../Models/Organization');
 // const bcrypt = require('bcryptjs');
 // const jwt = require('jsonwebtoken');
 const {body, validationResult} = require('express-validator');
+
+const Organizations = require('../Models/Organization');
+const OrganizationProjects = require('../Models/OrganizationProjects');
+const Projects = require('../Models/Project');
+
 const fetchOrganization = require('../middleware/fetchorganization');
 
 router.get('/ViewOrganization', fetchOrganization, async (req, res)=>{
@@ -47,16 +52,47 @@ router.post('/CreateOrganization' , [
     }
 });
 
-// router.get('/viewOrganizationProject', fetchuser, async (req, res)=>{
-//     try{
-//         const userId = req.user.id;
-//         const notes = await Notes.find({user: userId});
-//         res.json(notes);
-//     }
-//     catch(error){
-//         console.error(error.message);
-//         res.status(500).send("Some error occured");
-//     }
-// });
+router.get('/viewOrganizationProject', fetchOrganization, async (req, res)=>{
+    try{
+        const orgId = req.header('organizationId');
+        const organizations = req.organizations;
+        // const organizationprojects = await OrganizationProjects.find({organizationId: "64af8aa16f906f8f4f6a37fc"})
+        const organizationprojects = await Organizations.aggregate([
+            {
+              $lookup: {
+                from: "organizationprojects",
+                localField: "_id",
+                foreignField: "organizationId",
+                as: "orgProj"
+              }
+            },
+            {
+              $lookup: {
+                from: "projects",
+                localField: "orgProj.projectId",
+                foreignField: "_id",
+                as: "projects"
+              }
+            },
+            {
+                $match: {
+                  _id: new mongoose.Types.ObjectId(orgId) 
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    projects: 1
+                  }
+            }
+          ])
+          
+        res.json({organizations, organizationprojects});
+    }
+    catch(error){
+        console.error(error.message);
+        res.status(500).send("Some error occured");
+    }
+});
 
 module.exports = router;
