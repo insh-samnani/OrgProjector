@@ -2,9 +2,9 @@ const mongoose=require('mongoose');
 const { Schema } = mongoose;
 
 const projectWorkSchema = new Schema({
-  organizationId: {
+  workItemId: {
     type:Schema.Types.ObjectId,
-    ref:'Organization'
+    ref:'WorkItem'
   },
   projectId: {
     type:Schema.Types.ObjectId,

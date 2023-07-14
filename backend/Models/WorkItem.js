@@ -2,6 +2,9 @@ const mongoose=require('mongoose')
 const { Schema } = mongoose;
 
 const workItemSchema = new Schema({
+  key: {
+    type:String
+  }, 
   name: {
     type:String,
     required:true

@@ -7,7 +7,7 @@ const fetchOrganization = async (req, res, next) => {
         next();
     }
     catch(error){
-        res.status(401).send({error: "Please provide valid organization id2"});
+        res.status(401).send({error: "Please provide valid organization id"});
     }
 }
 

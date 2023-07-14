@@ -1,8 +1,6 @@
 const express = require('express');
 const mongoose=require('mongoose')
 const router = express.Router();
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
 const {body, validationResult} = require('express-validator');
 
 const Organizations = require('../Models/Organization');
@@ -10,8 +8,9 @@ const OrganizationProjects = require('../Models/OrganizationProjects');
 const Projects = require('../Models/Project');
 
 const fetchOrganization = require('../middleware/fetchorganization');
+const fetchuser = require('../middleware/fetchuser');
 
-router.get('/ViewOrganization', fetchOrganization, async (req, res)=>{
+router.get('/ViewOrganization', fetchOrganization, fetchuser, async (req, res)=>{
     try{
         res.send(req.organizations)
     }
@@ -21,7 +20,7 @@ router.get('/ViewOrganization', fetchOrganization, async (req, res)=>{
     }
 });
 
-router.post('/CreateOrganization' , [
+router.post('/CreateOrganization' , fetchuser, [
     body('name', 'Enter a valid Organization Name').isLength({min:2}),
     body('country', 'Enter a valid Country').isLength({min:2}),
 ] , async (req, res)=>{
@@ -35,7 +34,7 @@ router.post('/CreateOrganization' , [
 
     try{
         let organizations = await Organizations.findOne({name: req.body.name, country: req.body.country});
-        if(organizations){ //400 - Bad request
+        if(organizations){ 
             return res.status(400).json({success, error: "Sorry! An organization with this name already exists."});
         }
         organizations = await Organizations.create({
@@ -52,11 +51,13 @@ router.post('/CreateOrganization' , [
     }
 });
 
-router.get('/viewOrganizationProject', fetchOrganization, async (req, res)=>{
+router.get('/viewOrganizationProject/:organizationId', fetchOrganization, fetchuser, async (req, res)=>{
     try{
-        const orgId = req.header('organizationId');
+        const orgId = req.params.organizationId;
         const organizations = req.organizations;
-        // const organizationprojects = await OrganizationProjects.find({organizationId: "64af8aa16f906f8f4f6a37fc"})
+
+        const organization = await Organizations.find({_id: new mongoose.Types.ObjectId(orgId)})
+
         const organizationprojects = await Organizations.aggregate([
             {
               $lookup: {
@@ -87,7 +88,7 @@ router.get('/viewOrganizationProject', fetchOrganization, async (req, res)=>{
             }
           ])
           
-        res.json({organizations, organizationprojects});
+        res.json({organizations, organization, organizationprojects});
     }
     catch(error){
         console.error(error.message);
