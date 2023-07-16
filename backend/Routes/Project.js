@@ -4,12 +4,15 @@ const router = express.Router();
 const {body, validationResult} = require('express-validator');
 const crypto = require('crypto');
 const fs = require('fs');
+const nodemailer = require('nodemailer');
 
 const Organizations = require('../Models/Organization');
 const OrganizationProjects = require('../Models/OrganizationProjects');
 const UserProject = require('../Models/UserProject');
 const Projects = require('../Models/Project');
 const Managers = require('../Models/Manager');
+const Users = require('../Models/User');
+
 const fetchuser = require('../middleware/fetchuser');
 const fetchorganization = require('../middleware/fetchuser');
 
@@ -98,22 +101,27 @@ router.post('/JoinProject' , fetchorganization, fetchuser, [
         const ObjectId = mongoose.Types.ObjectId;
 
         const key = req.body.key;
-
         const projectId = await Projects.find({key: key}).select('_id');
-        const userId = req.user.id
 
-        const checkExist = await UserProject.find({userId: new ObjectId(userId), projectId: new ObjectId(projectId[0]._id.toString())})
-        if(checkExist){
-            res.json({message: "Already Joined"})
+        if(projectId.length === 0){
+            res.json({ success, message: "No Project With This Key" })
         }
         else{
-            let userProject = await UserProject.create({
-                projectId: new ObjectId(projectId[0]._id.toString()),
-                userId: new ObjectId(userId),
-            })
-    
-            success = true;
-            res.json({ success, organizations })
+            const userId = req.user.id
+
+            const checkExist = await UserProject.find({userId: new ObjectId(userId), projectId: new ObjectId(projectId[0]._id.toString())})
+            if(checkExist.length > 0){
+                res.json({message: "Already Joined"})
+            }
+            else{
+                let userProject = await UserProject.create({
+                    projectId: new ObjectId(projectId[0]._id.toString()),
+                    userId: new ObjectId(userId),
+                })
+        
+                success = true;
+                res.json({ success, organizations })
+        }
         }
         
     }
@@ -179,6 +187,65 @@ router.get('/ViewProjectMembers/:id', fetchuser, [
           }
 
           res.json({project, projectmembers, role});
+    }
+    catch(error){
+        console.error(error.message);
+        res.status(500).send("Some error occured");
+    }
+});
+
+router.post('/InviteMember', fetchuser, [
+    body('email', 'Enter a valid Email').isEmail(),
+] , async (req, res)=>{
+
+    let success = false;
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({success, errors: errors.array()});
+    }
+
+    try{
+        const email = req.body.email
+
+        var emailCheck = await Users.find({email: email});
+
+        if(emailCheck.length === 0){
+            res.json({success, message: "Email Not Exist"});
+        }
+        else{
+            const projectId = req.body.projectId
+
+            const ObjectId = mongoose.Types.ObjectId;
+
+            var key = await Projects.find({_id: projectId}).select('key');
+            const userId = req.user.id
+
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                user: 'advancetourguides@gmail.com',
+                pass: 'crbvfzyiabzawftb'
+                }
+            });
+            var mailOptions = {
+                from: 'advancetourguides@gmail.com',
+                to: `${email}`,
+                subject: 'PROJECT INVITATION',
+                text: `Please join the project having project key: ${key[0].key}`
+            };
+            
+            transporter.sendMail(mailOptions, function(error, info){
+                if(error) {
+                    console.log(error);
+                } 
+                else {
+                    success = true
+                    res.json({success, message: "Emailed Successfully"});
+                }
+            });
+        }
+        
     }
     catch(error){
         console.error(error.message);

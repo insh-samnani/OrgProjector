@@ -3,8 +3,13 @@ const router = express.Router();
 const User = require('../Models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// const fetchuser = require('../middleware/fetchuser');
+const mongoose=require('mongoose');
 const {body, validationResult} = require('express-validator');
+
+const UserWork = require('../Models/UserWork');
+const UserProjects = require('../Models/UserProject');
+
+const fetchuser = require('../middleware/fetchuser');
 
 const JWT_SECRET = '@insha@is@a@good@girl@';
 
@@ -94,6 +99,61 @@ router.post('/LoginUser' , [
         res.status(500).send("Some error occured");
     }
 
+});
+
+router.get('/DeleteMember/:projectId/:userId', fetchuser, [
+] , async (req, res)=>{
+
+    let success = false;
+
+    var projectId = req.params.projectId
+    var userId = req.params.userId
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({success, errors: errors.array()});
+    }
+
+    try{
+        
+        const ObjectId = mongoose.Types.ObjectId;
+
+        var userproject = await UserProjects.deleteMany({userId: new ObjectId(userId), projectId: new ObjectId(projectId)});
+        const userworks = await UserWork.aggregate([
+            {
+                $lookup: {
+                  from: "workitems",
+                  localField: "workItemId",
+                  foreignField: "_id",
+                  as: "workitems"
+                }
+            },
+            {
+              $lookup: {
+                from: "projectworks",
+                localField: "workitems._id",
+                foreignField: "workItemId",
+                as: "projectworks"
+              }
+            },
+            {
+                $match: {
+                    "userId": new ObjectId(userId),
+                    "projectworks.projectId": new ObjectId(projectId)
+                }
+            }
+          ])
+          
+        var userwork = await UserWork.deleteMany({userId: new ObjectId(userId), workItemId: new ObjectId(userworks[0].workItemId.toString())});
+
+        success = true;
+        res.json({ success, message: "Successfully Deleted the Member" })
+        
+    }
+    catch(error){
+        console.error(error.message);
+        res.status(500).send("Some error occured");
+    }
 });
 
 module.exports = router
