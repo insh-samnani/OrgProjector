@@ -76,7 +76,8 @@ router.post('/CreateProject/:organizationId' , fetchuser, [
         })
 
         success = true;
-        res.json({ success })
+        const saveProject = await project.save();
+        res.json(saveProject)
     }
     catch(error){
         console.error(error.message);
@@ -111,7 +112,7 @@ router.post('/JoinProject' , fetchorganization, fetchuser, [
 
             const checkExist = await UserProject.find({userId: new ObjectId(userId), projectId: new ObjectId(projectId[0]._id.toString())})
             if(checkExist.length > 0){
-                res.json({message: "Already Joined"})
+                res.json({success, message: "Already Joined"})
             }
             else{
                 let userProject = await UserProject.create({

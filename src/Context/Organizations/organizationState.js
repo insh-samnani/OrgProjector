@@ -16,12 +16,26 @@ const OrganizationState = (props) => {
       },
     });
     const json = await response.json()
-    console.warn(json);
     setOrganizations(json)
   }
 
+  const addOrganization = async (name, country) => {
+
+    const response = await fetch(`${host}/api/Organizations/CreateOrganization`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "auth-token": localStorage.getItem('tokenn')
+      },
+      body: JSON.stringify({name, country})
+    });
+
+    const organization = await response.json();
+    setOrganizations(organizations.concat(organization))
+  }
+
   return (
-    <OrganizationContext.Provider value={{ organizations, getOrganization }}>
+    <OrganizationContext.Provider value={{ organizations, getOrganization, addOrganization }}>
       {props.children}
     </OrganizationContext.Provider>
   )
