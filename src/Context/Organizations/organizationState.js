@@ -5,6 +5,7 @@ const OrganizationState = (props) => {
   const host = "http://localhost:3000"
   const organizationInitial = []
   const [organizations, setOrganizations] = useState(organizationInitial)
+  const [organizationWorkitem, setOrganizationWorkitem] = useState(organizationInitial)
 
   const getOrganization = async () => {
     
@@ -34,8 +35,21 @@ const OrganizationState = (props) => {
     setOrganizations(organizations.concat(organization))
   }
 
+  const getOrganizationWorkitem = async (id) => {
+
+    const response = await fetch(`${host}/api/Workitems/ShowOrganizationWorkItems/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "auth-token": localStorage.getItem('tokenn')
+      },
+    });
+    const json = await response.json()
+    setOrganizationWorkitem(json)
+  }
+
   return (
-    <OrganizationContext.Provider value={{ organizations, getOrganization, addOrganization }}>
+    <OrganizationContext.Provider value={{ organizations, organizationWorkitem, getOrganization, addOrganization, getOrganizationWorkitem }}>
       {props.children}
     </OrganizationContext.Provider>
   )

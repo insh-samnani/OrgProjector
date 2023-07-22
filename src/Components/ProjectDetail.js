@@ -1,27 +1,33 @@
 import React, { useContext, useEffect } from 'react'
-import projectContext from "../Context/Projects/projectContext"
 import organizationContext from "../Context/Organizations/organizationContext"
+import projectContext from "../Context/Projects/projectContext"
+import workitemContext from "../Context/Workitems/workitemContext"
 import { useParams, useNavigate } from 'react-router-dom';
 
-import AddProject from './AddProject';
-import ProjectItem from './ProjectItem';
-import JoinProject from './JoinProject';
-import OrganizationWorkitem from './OrganizationWorkitem';
+import ProjectMember from './ProjectMember';
+import InviteMember from './InviteMember';
+import ProjectWorkitem from './ProjectWorkitem';
+import ProjectBacklog from './ProjectBacklog';
 
-const OrganizationDetail = (props) => {
+const ProjectDetail = (props) => {
 
     const { id } = useParams();
 
     let history = useNavigate();
-    const context = useContext(projectContext);
-    const context2 = useContext(organizationContext);
-    const { projects, organizations, organization, getProject } = context;
-    const { getOrganizationWorkitem, organizationWorkitem } = context2;
+    const context = useContext(organizationContext);
+    const context2  = useContext(projectContext);
+    const context3  = useContext(workitemContext);
+    const { organizations, getOrganization } = context;
+    const { oneProject, getOneProject, projectMembers, getProjectMembers } = context2;
+    const { projectWorkitem, getProjectWorkitem, backlog, getBacklog } = context3;
 
     useEffect(() => {
         if(localStorage.getItem('tokenn')){
-            getProject(id);
-            getOrganizationWorkitem(id);
+            getProjectMembers(id);
+            getOrganization();
+            getOneProject(id);
+            getProjectWorkitem(id);
+            getBacklog(id);
         }
         else{
             history("/login");
@@ -31,15 +37,15 @@ const OrganizationDetail = (props) => {
 
   return (
     <>
-      <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Create a Project</h5>
+                        <h5 className="modal-title" id="exampleModalLabel">Invite a Member</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <AddProject showAlert ={props.showAlert} id ={organization._id} />
+                        <InviteMember showAlert ={props.showAlert} projectId = {id} />
                     </div>
                 </div>
             </div>
@@ -49,11 +55,11 @@ const OrganizationDetail = (props) => {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Join a Project</h5>
+                        <h5 className="modal-title" id="exampleModalLabel">Project Workitems</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <JoinProject showAlert ={props.showAlert} />
+                        <ProjectWorkitem showAlert ={props.showAlert} workitem = {projectWorkitem} />
                     </div>
                 </div>
             </div>
@@ -63,11 +69,11 @@ const OrganizationDetail = (props) => {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Organization Workitems</h5>
+                        <h5 className="modal-title" id="exampleModalLabel">Project Backlog</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <OrganizationWorkitem showAlert ={props.showAlert} workitem ={organizationWorkitem} />
+                        <ProjectBacklog showAlert ={props.showAlert} workitem = {backlog} />
                     </div>
                 </div>
             </div>
@@ -88,30 +94,24 @@ const OrganizationDetail = (props) => {
                 })}
             </div>
             <div className="my-3" style = {{flex: "3"}}>
-                <h2>Projects</h2>
-                <h5>{organization.name}</h5>
-                <h5>{organization.country}</h5>
-                <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Create a Project</button>
-                <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal1">Join a Project</button>
-                <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                    My WorkItems
-                </button>
-                {/* {organizationWorkitem.organizationworkitems.length > 0 ? (
-                    <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                    View my WorkItems
-                    </button>
-                ) : (
-                    <button type="button" className="btn btn-dark" disabled>
-                    View my WorkItems
-                    </button>
-                )} */}
-                {projects && projects.map((project) => {
-                    return <ProjectItem key={project._id} projects={project} showAlert = {props.showAlert} />
-                })}
+                {oneProject.project && oneProject.project.length > 0 && (
+                    <h3>{oneProject.project[0].name}</h3>
+                )}
+                {projectMembers.role === "manager" ? 
+                    <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Invite a Member</button> : <></>
+                }
+                <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal1">My Workitems</button>
+                <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal2">Project Backlog</button>
+                <div>
+                    {projectMembers.projectmembers && projectMembers.projectmembers[0].users.map((projectMember) => {
+                        return <ProjectMember key={projectMember._id} member={projectMember} showAlert = {props.showAlert} role={projectMembers.role} projectId = {id} />
+                    })}
+                </div>
             </div>
         </div>
+
     </>
   )
 }
 
-export default OrganizationDetail
+export default ProjectDetail

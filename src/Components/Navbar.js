@@ -1,6 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+
+  let history = useNavigate();
+  const handleLogout = () =>{
+    localStorage.removeItem('tokenn');
+    history("/");
+    
+  }
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary bg-dark">
@@ -21,16 +29,22 @@ const Navbar = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
-              <li className="nav-item">
+              {!localStorage.getItem('tokenn')? 
+              <>
+                <li className="nav-item">
                 <Link className="nav-link active" aria-current="page" to="/login" style = {{color: "white"}}>
                   Login
                 </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/" style = {{color: "white"}}>
-                  Signup
-                </Link>
-              </li>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/" style = {{color: "white"}}>
+                    Signup
+                  </Link>
+                </li>
+              </>
+              :
+                <button onClick = {handleLogout} className="btn btn-primary"> Logout </button>
+              }
             </ul>
           </div>
         </div>

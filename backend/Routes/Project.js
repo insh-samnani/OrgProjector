@@ -180,7 +180,7 @@ router.get('/ViewProjectMembers/:id', fetchuser, [
           ])
 
           const managers = await Managers.find({userId: new mongoose.Types.ObjectId(req.user.id), projectId: new mongoose.Types.ObjectId(projectId)})
-          if(managers){
+          if(managers.length > 0){
             role = "manager"
           }
           else{
@@ -247,6 +247,20 @@ router.post('/InviteMember', fetchuser, [
             });
         }
         
+    }
+    catch(error){
+        console.error(error.message);
+        res.status(500).send("Some error occured");
+    }
+});
+
+router.get('/oneProject/:projectId', fetchuser, async (req, res)=>{
+    try{
+        const projectId = req.params.projectId;
+
+        const project = await Projects.find({_id: new mongoose.Types.ObjectId(projectId)})
+          
+        res.json({project});
     }
     catch(error){
         console.error(error.message);
