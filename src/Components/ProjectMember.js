@@ -1,7 +1,27 @@
-import React from 'react'
+import React, {useState, useEffect, useContext} from 'react'
+import projectContext from "../Context/Projects/projectContext"
+import { useNavigate } from 'react-router-dom';
 
 const ProjectMember = (props) => {
     const member = props.member
+    const [check, setCheck] = useState('')
+
+    let history = useNavigate();
+
+    const context  = useContext(projectContext);
+    const { getProjectMembers } = context;
+
+    useEffect(() => {
+        if(localStorage.getItem('tokenn')){
+            if(check === "done"){
+                props.showAlert("Deleted Successfully", "danger");
+            }
+        }
+        else{
+            history("/login");
+        }
+        // eslint-disable-next-line
+    }, [check])
 
     const handleDeleteClick = async (memberId, projectId) => {
 
@@ -12,9 +32,9 @@ const ProjectMember = (props) => {
                 "auth-token": localStorage.getItem('tokenn')
             }
         });
-        const json = await response.json()
-        console.log(json);
-        props.showAlert("Deleted Successfully", "danger");
+        getProjectMembers(props.projectId);
+        setCheck("done");
+        console.log(response);
     };
 
     return (

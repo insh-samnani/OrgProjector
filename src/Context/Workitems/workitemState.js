@@ -34,8 +34,42 @@ const WorkitemState = (props) => {
         setBacklog(json)
     }
 
+    const createWorkitem = async (name, nature, projectId) => {
+
+      const response = await fetch(`${host}/api/Workitems/CreateWorkitem`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "auth-token": localStorage.getItem('tokenn')
+        },
+        body: JSON.stringify({name,nature,projectId})
+      });
+  
+      const workitem = await response.json();
+      console.log(workitem)
+      getProjectWorkitem(projectId);
+      getBacklog(projectId);
+    }
+
+    const updateWorkitem = async (workitemId, state, projectId) => {
+
+      const response = await fetch(`${host}/api/Workitems/UpdateStatus`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "auth-token": localStorage.getItem('tokenn')
+        },
+        body: JSON.stringify({workitemId, state})
+      });
+  
+      const workitem = await response.json();
+      console.log(workitem)
+      getBacklog(projectId);
+      getProjectWorkitem(projectId);
+    }
+
     return (
-        <WorkitemContext.Provider value={{ projectWorkitem, backlog, getProjectWorkitem, getBacklog }}>
+        <WorkitemContext.Provider value={{ projectWorkitem, backlog, getProjectWorkitem, getBacklog, createWorkitem, updateWorkitem }}>
             {props.children}
         </WorkitemContext.Provider>
     )

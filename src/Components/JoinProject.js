@@ -22,6 +22,8 @@ const JoinProject = (props) => {
     const handleClick = (e)=>{
         e.preventDefault();
         joinProject(key);
+        setKey('')
+        props.setShowModal(false)
     }
 
     const onChange = (e)=>{
@@ -34,7 +36,7 @@ const JoinProject = (props) => {
                     <label htmlFor="key" className="form-label">Key</label>
                     <input type="text" className="form-control" id="key" name="key" aria-describedby="emailHelp" value={key} onChange={onChange} minLength={5} required /> 
                 </div>
-                <button disabled={key.length<5} type="button" className="btn btn-dark" onClick={handleClick}>Join Project</button>
+                <button disabled={key.length<5} type="button" className="btn btn-dark" data-bs-dismiss="modal" onClick={handleClick}>Join Project</button>
             </form>
         </div>
     )

@@ -20,6 +20,7 @@ const InviteMember = (props) => {
         e.preventDefault();
         inviteMember(props.projectId, member.email);
         setMember({email: ""})
+        props.setShowModal(false)
     }
 
     const onChange = (e)=>{
@@ -32,7 +33,7 @@ const InviteMember = (props) => {
                     <label htmlFor="name" className="form-label">Email</label>
                     <input type="email" className="form-control" id="email" name="email" aria-describedby="emailHelp" value={member.email} onChange={onChange} minLength={10} required /> 
                 </div>
-                <button disabled={member.email.length<10} type="submit" className="btn btn-dark" onClick={handleClick}>Invite</button>
+                <button disabled={member.email.length<10} type="submit" className="btn btn-dark" data-bs-dismiss="modal" onClick={handleClick}>Invite</button>
             </form>
         </div>
     )

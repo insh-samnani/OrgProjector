@@ -10,6 +10,7 @@ const AddOrganization = (props) => {
         e.preventDefault();
         addOrganization(organization.name, organization.country);
         setOrganization({name: "", country: ""})
+        props.setShowModal(false)
         props.showAlert("Added Successfully", "success");
     }
 
@@ -27,7 +28,7 @@ const AddOrganization = (props) => {
                     <label htmlFor="country" className="form-label">Country</label>
                     <input type="text" className="form-control" id="country" name="country" value={organization.country} onChange={onChange} minLength={2} required />
                 </div>
-                <button disabled={organization.name.length<2 || organization.country.length<2} type="submit" className="btn btn-dark" onClick={handleClick}>Add Organization</button>
+                <button disabled={organization.name.length<2 || organization.country.length<2} type="submit" className="btn btn-dark" onClick={handleClick} data-bs-dismiss="modal">Add Organization</button>
             </form>
         </div>
     )

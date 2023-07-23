@@ -76,7 +76,8 @@ router.post('/CreateWorkitem', fetchuser, [
         })
 
         success = true;
-        res.json({ success })
+        const saveWorkitem = await workitem.save();
+        res.json(saveWorkitem)
     }
     catch(error){
         console.error(error.message);

@@ -10,6 +10,7 @@ const AddProject = (props) => {
         e.preventDefault();
         addProject(project.name, props.id);
         setProject({name: ""})
+        props.setShowModal(false)
         props.showAlert("Added Successfully", "success");
     }
 
@@ -23,7 +24,7 @@ const AddProject = (props) => {
                     <label htmlFor="name" className="form-label">Name</label>
                     <input type="text" className="form-control" id="name" name="name" aria-describedby="emailHelp" value={project.name} onChange={onChange} minLength={5} required /> 
                 </div>
-                <button disabled={project.name.length<5} type="submit" className="btn btn-dark" onClick={handleClick}>Add Project</button>
+                <button disabled={project.name.length<5} type="submit" className="btn btn-dark" data-bs-dismiss="modal" onClick={handleClick}>Add Project</button>
             </form>
         </div>
     )
