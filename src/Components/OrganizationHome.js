@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import organizationContext from "../Context/Organizations/organizationContext"
+import { FormControl } from 'react-bootstrap';
 
 
 import OrganizationItem from './OrganizationItem';
@@ -10,6 +11,7 @@ const OrganizationHome = (props) => {
     let history = useNavigate();
     const context = useContext(organizationContext);
     const { organizations, getOrganization } = context;
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         if(localStorage.getItem('tokenn')){
@@ -20,6 +22,14 @@ const OrganizationHome = (props) => {
         }
         // eslint-disable-next-line
     }, [])
+
+    const handleCreateOrganizationClick = () => {
+        props.setShowModal(true);
+    };
+
+    const filteredOrganizations = organizations.filter((org) =>
+        org.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <>
@@ -38,11 +48,28 @@ const OrganizationHome = (props) => {
             </div>
             
             <div className="row my-3">
-                <h2>Organizations</h2>
-                <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => props.setShowModal(true)}>Create an Organization</button>
-                {organizations && organizations.map((organization) => {
-                    return <OrganizationItem key={organization._id} organizations={organization} showAlert = {props.showAlert} />
-                })}
+                <div className="container d-flex flex-column align-items-center" style={{marginBottom: "30px"}}>
+                    <h1 style={{color: "#590268"}}>ORGANIZATIONS</h1>
+                    <div className="container my-3">
+                        <FormControl
+                            type="text"
+                            placeholder="Search Organization Name"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            style={{
+                                marginBottom: "10px",
+                                borderColor: "none",
+                                outline: searchTerm ? '3px solid #590268' : '3px solid black'
+                            }}
+                        />
+                    </div>
+                </div>
+                {filteredOrganizations.map((organization) => (
+                    <OrganizationItem key={organization._id} organizations={organization} showAlert={props.showAlert} />
+                ))}
+                <div className="container d-flex flex-column align-items-end" style={{ position: 'fixed', top:'92vh', right: '3vh', justifyContent: "flex-end", marginTop: "20px" }}>
+                    <i className="fa-solid fa-circle-plus fa-2xl sticky-bottom fa-spin" style={{ color: "#000000", cursor: 'pointer' ,fontSize:"6vh"}} data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={handleCreateOrganizationClick} title="Create Organization"></i>
+                </div>
             </div>
         </>
     )

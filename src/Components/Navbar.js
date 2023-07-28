@@ -11,7 +11,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary bg-dark">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary" style={{backgroundColor: "#590268"}}>
         <div className="container-fluid">
           <a className="navbar-brand" href="/" style = {{color: "white"}}>
             GDO

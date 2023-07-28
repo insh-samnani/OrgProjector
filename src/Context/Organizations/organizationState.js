@@ -6,6 +6,7 @@ const OrganizationState = (props) => {
   const organizationInitial = []
   const [organizations, setOrganizations] = useState(organizationInitial)
   const [organizationWorkitem, setOrganizationWorkitem] = useState(organizationInitial)
+  const [addCheck, setAddCheck] = useState(false)
 
   const getOrganization = async () => {
     
@@ -32,7 +33,11 @@ const OrganizationState = (props) => {
     });
 
     const organization = await response.json();
-    setOrganizations(organizations.concat(organization))
+    
+    if(organization.success){
+      setAddCheck(true);
+      setOrganizations(organizations.concat(organization));
+    }
   }
 
   const getOrganizationWorkitem = async (id) => {
@@ -49,7 +54,7 @@ const OrganizationState = (props) => {
   }
 
   return (
-    <OrganizationContext.Provider value={{ organizations, organizationWorkitem, getOrganization, addOrganization, getOrganizationWorkitem }}>
+    <OrganizationContext.Provider value={{ organizations, organizationWorkitem, addCheck, getOrganization, addOrganization, getOrganizationWorkitem }}>
       {props.children}
     </OrganizationContext.Provider>
   )

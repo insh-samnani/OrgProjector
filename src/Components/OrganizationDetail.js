@@ -29,6 +29,11 @@ const OrganizationDetail = (props) => {
         // eslint-disable-next-line
     }, [])
 
+    const handleCreateProjectClick = () => {
+        // Handle the logic for creating an organization here
+        props.setShowModal(true);
+    };
+
   return (
     <>
       <div className={`modal fade ${props.showModal ? 'show' : ''}`} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -87,11 +92,10 @@ const OrganizationDetail = (props) => {
                         </div>
                 })}
             </div>
-            <div className="my-3" style = {{flex: "3"}}>
+            <div className="row my-3" style = {{flex: "3"}}>
                 <h2>Projects</h2>
                 <h5>{organization.name}</h5>
                 <h5>{organization.country}</h5>
-                <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => props.setShowModal(true)}>Create a Project</button>
                 <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal1" onClick={() => props.setShowModal(true)}>Join a Project</button>
                 {organizationWorkitem.organizationworkitems && organizationWorkitem.organizationworkitems.length > 0 ? (
                         <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal2" onClick={() => props.setShowModal(true)}>
@@ -103,6 +107,9 @@ const OrganizationDetail = (props) => {
                 {projects && projects.map((project) => {
                     return <ProjectItem key={project._id} projects={project} showAlert = {props.showAlert} />
                 })}
+                <div className="container d-flex flex-column align-items-end" style={{ position: 'fixed', top:'92vh', right: '3vh', justifyContent: "flex-end", marginTop: "20px" }}>
+                    <i className="fa-solid fa-circle-plus fa-2xl sticky-bottom fa-spin" style={{ color: "#000000", cursor: 'pointer' ,fontSize:"6vh"}} data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={handleCreateProjectClick} title="Create Project"></i>
+                </div>
             </div>
         </div>
     </>

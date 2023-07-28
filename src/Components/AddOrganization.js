@@ -3,7 +3,7 @@ import organizationContext from "../Context/Organizations/organizationContext"
 
 const AddOrganization = (props) => {
     const context = useContext(organizationContext);
-    const {addOrganization} = context;
+    const {addOrganization, addCheck} = context;
     const [organization, setOrganization] = useState({name: "", country: ""})
 
     const handleClick = (e)=>{
@@ -11,7 +11,12 @@ const AddOrganization = (props) => {
         addOrganization(organization.name, organization.country);
         setOrganization({name: "", country: ""})
         props.setShowModal(false)
-        props.showAlert("Added Successfully", "success");
+        if(addCheck){
+            props.showAlert("Added Successfully", "success");
+        }
+        else{
+            props.showAlert("Organization Already Exist", "danger");
+        }
     }
 
     const onChange = (e)=>{

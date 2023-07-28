@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
-import Footer from './Components/Footer';
+// import Footer from './Components/Footer';
 import Navbar from './Components/Navbar'
 import Alert from './Components/Alert';
 import Home from './Components/Home';
@@ -48,7 +48,7 @@ function App() {
           </ProjectState>
         </OrganizationState>
       </WorkitemState>
-      <Footer title="Insha Samnani - BSCS (FAST-NUCES)" />
+      {/* <Footer title="Insha Samnani - BSCS (FAST-NUCES)" /> */}
     </Router>
   );
 }
