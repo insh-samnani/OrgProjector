@@ -5,7 +5,7 @@ const ProjectItem = (props) => {
     const { projects } = props;
     return (
         <div className="col-md-4">
-            <div className="card my-3" title="Further Details">
+            <div className="card my-3" title="Further Details" style={{backgroundColor: "#f4e2f7", borderRadius: "13px", border: "3px solid #590268"}}>
                     <div className="card-body container d-flex flex-column align-items-center">
                         <div className='container'>
                             <div className="row">
@@ -18,9 +18,9 @@ const ProjectItem = (props) => {
                             </div>
                         </div>
                         <div className="container d-flex justify-content-end">
-                        <Link to={`/projectDetail/${projects._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>  
-                            <i className="fa-solid fa-arrow-right-from-bracket fa-beat" ></i>
-                        </Link>
+                            <Link to={`/projectDetail/${projects._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <i className="fa-solid fa-arrow-right-from-bracket fa-beat" ></i>
+                            </Link>
                         </div>
                     </div>
             </div>

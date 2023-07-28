@@ -30,7 +30,14 @@ const OrganizationDetail = (props) => {
     }, [])
 
     const handleCreateProjectClick = () => {
-        // Handle the logic for creating an organization here
+        props.setShowModal(true);
+    };
+
+    const handleJoinProjectClick = () => {
+        props.setShowModal(true);
+    };
+
+    const handleViewWorkitem = () => {
         props.setShowModal(true);
     };
 
@@ -93,23 +100,27 @@ const OrganizationDetail = (props) => {
                 })}
             </div>
             <div className="row my-3" style = {{flex: "3"}}>
-                <h2>Projects</h2>
-                <h5>{organization.name}</h5>
-                <h5>{organization.country}</h5>
-                <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal1" onClick={() => props.setShowModal(true)}>Join a Project</button>
-                {organizationWorkitem.organizationworkitems && organizationWorkitem.organizationworkitems.length > 0 ? (
-                        <button type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal2" onClick={() => props.setShowModal(true)}>
-                            View my WorkItems
-                        </button>
-                    ) : (
-                        null
-                )}
+                <div className="container d-flex flex-column align-items-center" style={{marginBottom: "30px"}}>
+                    <h1 style={{color: "#590268"}}>PROJECTS</h1>
+                    <h3>{organization.name}</h3>
+                    <h5>{organization.country}</h5>
+                </div>
                 {projects && projects.map((project) => {
-                    return <ProjectItem key={project._id} projects={project} showAlert = {props.showAlert} />
+                        return <ProjectItem key={project._id} projects={project} showAlert = {props.showAlert} />
                 })}
                 <div className="container d-flex flex-column align-items-end" style={{ position: 'fixed', top:'92vh', right: '3vh', justifyContent: "flex-end", marginTop: "20px" }}>
                     <i className="fa-solid fa-circle-plus fa-2xl sticky-bottom fa-spin" style={{ color: "#000000", cursor: 'pointer' ,fontSize:"6vh"}} data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={handleCreateProjectClick} title="Create Project"></i>
                 </div>
+                <div className="container d-flex flex-column align-items-end" style={{ position: 'fixed', top:'82vh', right: '4vh', justifyContent: "flex-end", marginTop: "20px" }}>
+                    <i className="fa-solid fa-users-viewfinder fa-2xl sticky-bottom fa-spin" style={{ color: "#000000", cursor: 'pointer'}} data-bs-toggle="modal" data-bs-target="#exampleModal1" onClick={handleJoinProjectClick} title="Join Project"></i>
+                </div>
+                {organizationWorkitem.organizationworkitems && organizationWorkitem.organizationworkitems.length > 0 ? (
+                        <div className="container d-flex flex-column align-items-end" style={{ position: 'fixed', top:'72vh', right: '4vh', justifyContent: "flex-end", marginTop: "20px" }}>
+                            <i className="fa-solid fa-briefcase fa-2xl sticky-bottom fa-spin" style={{ color: "#000000", cursor: 'pointer'}} data-bs-toggle="modal" data-bs-target="#exampleModal2" onClick={handleViewWorkitem} title="Join Project"></i>
+                        </div>
+                    ) : (
+                    null
+                )}
             </div>
         </div>
     </>
