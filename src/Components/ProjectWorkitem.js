@@ -49,9 +49,9 @@ const ProjectWorkitem = (props) => {
         <>
         <div className={`modal fade ${showModal ? 'show' : ''}`} id="exampleModal5" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog">
-                <div className="modal-content">
+                <div className="modal-content" style={{backgroundColor: "#f4e2f7",border: "3px solid #590268", borderRadius: "20px"}}>
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Create Workitem</h5>
+                        <h5 className="modal-title" style={{color: "#590268", fontSize: "25px"}} id="exampleModalLabel">Create Workitem</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowModal(false)}></button>
                     </div>
                     <div className="modal-body">
@@ -67,16 +67,16 @@ const ProjectWorkitem = (props) => {
                         return <div key={workitemm._id}>
                             <div style = {{flex: "1", display: "flex", flexDirection: "row"}}>
                                 <div style = {{flex: "3"}}> 
-                                    <h4>{props.workitem.project[0].name}</h4>       
-                                    <p>Workitem Name: {workitemm.name}</p>
-                                    <p>Nature: {workitemm.nature}</p>
-                                    <p>State: {workitemm.state}</p>
+                                    <h4 style={{color: "#590268"}}>{props.workitem.project[0].name}</h4>       
+                                    <p style={{color: "#590268"}}>Workitem Name: {workitemm.name}</p>
+                                    <p style={{color: "#590268"}}>Nature: {workitemm.nature}</p>
+                                    <p style={{color: "#590268"}}>State: {workitemm.state}</p>
                                 </div>
                                 <div style = {{flex: "1"}}>
-                                    <button style = {{marginTop: "30px", width: "100px"}} type="button" className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal5" onClick={() => handleUpdateClick(workitemm._id)}>Update</button>
+                                    <i className="fa-solid fa-pen fa-xl" style={{ marginTop: "50px", color: "#000000", cursor: 'pointer', display: "block"}} data-bs-toggle="modal" data-bs-target="#exampleModal5" onClick={() => handleUpdateClick(workitemm._id)} title="Update Workitem"></i>
                                     {
-                                    props.role === "manager" ? <button style = {{marginTop: "10px", width: "100px"}} type="button" onClick={() => handleDeleteClick(workitemm._id, props.id)} className="btn btn-dark">Delete</button> : <></>
-                                    }                                
+                                    props.role === "manager" ?  <i className="fa-solid fa-trash fa-xl" style={{ marginTop: "50px", color: "#000000", cursor: 'pointer'}} onClick={() => handleDeleteClick(workitemm._id, props.id)} title="Delete Workitem"></i>: <></>
+                                    }                               
                                 </div>
                             </div>
                         </div>

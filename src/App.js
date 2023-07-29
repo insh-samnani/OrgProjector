@@ -10,6 +10,7 @@ import Login from './Components/Login';
 import OrganizationDetail from './Components/OrganizationDetail';
 import ProjectDetail from './Components/ProjectDetail';
 import OrganizationHome from './Components/OrganizationHome';
+import SignUp from './Components/SignUp';
 
 import OrganizationState from "./Context/Organizations/organizationState";
 import ProjectState from "./Context/Projects/projectState";
@@ -43,6 +44,7 @@ function App() {
                 <Route exact path="/organizationhome" element={<OrganizationHome showAlert={showAlert} setShowModal ={setShowModal} showModal ={showModal} />} />
                 <Route exact path="/organizationDetail/:id" element={<OrganizationDetail showAlert={showAlert} setShowModal ={setShowModal} showModal ={showModal} />} />
                 <Route exact path="/projectDetail/:id" element={<ProjectDetail showAlert={showAlert} setShowModal ={setShowModal} showModal ={showModal} />} />
+                <Route exact path="/signup" element={<SignUp showAlert={showAlert}/>} />
               </Routes>
             </div>
           </ProjectState>

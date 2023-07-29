@@ -4,9 +4,9 @@ import React from 'react'
 const ProjectItem = (props) => {
     const { projects } = props;
     return (
-        <div className="col-md-4">
+        <div className="col">
             <div className="card my-3" title="Further Details" style={{backgroundColor: "#f4e2f7", borderRadius: "13px", border: "3px solid #590268"}}>
-                    <div className="card-body container d-flex flex-column align-items-center">
+                    <div className="card-body container d-flex flex-column align-items-center" style={{height: "150px"}}>
                         <div className='container'>
                             <div className="row">
                                 <div className="col-1">

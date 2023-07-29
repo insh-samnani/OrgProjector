@@ -30,10 +30,10 @@ const InviteMember = (props) => {
         <div className="container my-3">
             <form className="my-3">
                 <div className="mb-3">
-                    <label htmlFor="name" className="form-label">Email</label>
-                    <input type="email" className="form-control" id="email" name="email" aria-describedby="emailHelp" value={member.email} onChange={onChange} minLength={10} required /> 
+                    <label htmlFor="name" className="form-label" style={{color: "#590268", fontSize: "25px"}}>Email</label>
+                    <input style={{backgroundColor: "#590268", color: "#f4e2f7"}} type="email" className="form-control" id="email" name="email" aria-describedby="emailHelp" value={member.email} onChange={onChange} minLength={10} required /> 
                 </div>
-                <button disabled={member.email.length<10} type="submit" className="btn btn-dark" data-bs-dismiss="modal" onClick={handleClick}>Invite</button>
+                <button style={{backgroundColor: "#590268", color: "#f4e2f7"}} disabled={member.email.length<10} type="submit" className="btn btn-dark" data-bs-dismiss="modal" onClick={handleClick}>Invite</button>
             </form>
         </div>
     )

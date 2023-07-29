@@ -44,7 +44,7 @@ router.post('/CreateOrganization' , fetchuser, [
 
         success = true;
         const saveOrganization = await organizations.save();
-        res.json(saveOrganization)
+        res.json({success, saveOrganization})
     }
     catch(error){
         console.error(error.message);

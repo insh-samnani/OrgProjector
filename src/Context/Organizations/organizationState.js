@@ -34,9 +34,9 @@ const OrganizationState = (props) => {
 
     const organization = await response.json();
     
-    if(organization.success){
+    if(organization.success === true){
       setAddCheck(true);
-      setOrganizations(organizations.concat(organization));
+      setOrganizations(organizations.concat(organization.saveOrganization));
     }
   }
 

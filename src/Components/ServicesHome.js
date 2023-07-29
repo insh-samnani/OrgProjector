@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function ServicesHome(props) {
   return (
-    <div className="card mx-1 my-3">
+    <div className="card mx-1 my-3" style={{backgroundColor: "#f4e2f7", borderRadius: "13px", border: "3px solid #590268"}}>
         <i className={props.icon} style={{color: "black"}}></i>
             <div className="card-body">
             <h5 className="card-title">{props.title}</h5>
@@ -10,7 +10,7 @@ export default function ServicesHome(props) {
                 {
                     props.data.map((elem,index)=>{
                         return(
-                            <li key={index} className="list-group-item">{elem}</li>
+                            <li style={{backgroundColor: "#f4e2f7", borderRadius: "13px", border: "3px solid #590268"}}key={index} className="list-group-item my-1">{elem}</li>
                         )
                     })
                 }

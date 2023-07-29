@@ -33,10 +33,10 @@ const JoinProject = (props) => {
         <div className="container my-3">
             <form className="my-3">
                 <div className="mb-3">
-                    <label htmlFor="key" className="form-label">Key</label>
-                    <input type="text" className="form-control" id="key" name="key" aria-describedby="emailHelp" value={key} onChange={onChange} minLength={5} required /> 
+                    <label htmlFor="key" className="form-label" style={{color: "#590268", fontSize: "25px"}}>Key</label>
+                    <input style={{backgroundColor: "#590268", color: "#f4e2f7"}} type="text" className="form-control" id="key" name="key" aria-describedby="emailHelp" value={key} onChange={onChange} minLength={5} required /> 
                 </div>
-                <button disabled={key.length<5} type="button" className="btn btn-dark" data-bs-dismiss="modal" onClick={handleClick}>Join Project</button>
+                <button style={{backgroundColor: "#590268", color: "#f4e2f7"}} disabled={key.length<5} type="button" className="btn btn-dark" data-bs-dismiss="modal" onClick={handleClick}>Join Project</button>
             </form>
         </div>
     )

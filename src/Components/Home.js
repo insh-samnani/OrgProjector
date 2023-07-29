@@ -1,5 +1,5 @@
 import React from 'react';
-import MainPic from '../Images/1.jpg'
+import MainPic from '../Images/1.png'
 import FeaturesHome from './FeaturesHome';
 import ServicesHome from './ServicesHome';
 import CarouselItems from './CarouselItems';
@@ -83,19 +83,20 @@ const Home = () => {
     
       {/* ---------------------------- */}
       {/* Main home view component */}
-    <div className="card mb-3">
+    <div className="card mb-3" style={{border:"none",backgroundColor:"#725f77",color:"#f4e2f7"}}>
       <div className="row g-0">
         <div className="col-md-4">
           <img src={MainPic} className="img-fluid rounded-start" alt="..."/>
         </div>
         <div className="col-md-8" >
           <div className="card-body text-center">
-          <h1 className="card-title"><b>Project Management<br/> Easy and Secure</b></h1>
-              <i className="fa-solid fa-shield-halved fa-2xl"></i>
+          <h1 style={{ color: "#590268", textShadow: "3px 3px 0 black" }} className="card-title"><b>PROJECT MANAGEMENT<br/> EASY AND SECURE</b></h1>
+              <i className="fa-solid fa-shield-halved fa-2xl" style={{color:"black"}}></i>
               <p className="card-text my-3"><i>"Full Control of Your Projects and WorkItems."</i></p>
               
               <br/>
-              <div className='container my-3 mx-3 d-flex justify-content-center'>
+              <div className='container my-3 mx-3'>
+                <div className='row'>
               {
                 features.map((elem)=>{
                   return(
@@ -104,6 +105,7 @@ const Home = () => {
                 })
               }
               </div>
+              </div>
           </div>
         </div>
       </div>
@@ -111,8 +113,8 @@ const Home = () => {
 
       {/* ---------------------------- */}
       {/* Service home view component */}
-      <div className='container my-3 text-center'>
-              <h1>Our Services</h1>
+      <div className='container my-3 text-center' style={{color:"#f4e2f7"}}>
+              <h1 style={{ color: "#590268", textShadow: "3px 3px 0 black" }}>OUR SERVICES</h1>
       </div>
       <br/>
       <div className="card-group my-3">
@@ -126,11 +128,11 @@ const Home = () => {
       {/* -------------------------------------------------- */}
       {/* Companies home view component */}
       <br/>
-      <div className='container my-3 text-center'>
-              <h1>100+ Companies Trusted in Us</h1>
+      <div className='container my-3 text-center' style={{color:"#f4e2f7"}}>
+              <h1 style={{ color: "#590268", textShadow: "3px 3px 0 black" }}>100+ COMPANIES TRUSTED IN US</h1>
       </div>
       <br/>
-      <div className="container text-center">
+      <div className="container text-center" >
           <div id="Carousel" className="carousel slide" data-bs-ride="carousel">
             <div className="carousel-inner">
               {companiesGroups.map((group, index) => (
