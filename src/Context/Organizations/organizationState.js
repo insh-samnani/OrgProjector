@@ -6,7 +6,7 @@ const OrganizationState = (props) => {
   const organizationInitial = []
   const [organizations, setOrganizations] = useState(organizationInitial)
   const [organizationWorkitem, setOrganizationWorkitem] = useState(organizationInitial)
-  const [addCheck, setAddCheck] = useState(false)
+  const [addCheck, setAddCheck] = useState('')
 
   const getOrganization = async () => {
     
@@ -34,9 +34,12 @@ const OrganizationState = (props) => {
 
     const organization = await response.json();
     
-    if(organization.success === true){
-      setAddCheck(true);
+    if(organization.success){
+      setAddCheck("Added");
       setOrganizations(organizations.concat(organization.saveOrganization));
+    }
+    else{
+      setAddCheck("NotAdded");
     }
   }
 
